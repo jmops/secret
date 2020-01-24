@@ -1,5 +1,6 @@
 #include "encryption.h"
-
+#include <iostream>
+//using namespace std;
 
 
 /**
@@ -55,8 +56,10 @@ void Encrypt::bruteforceCaesarCipher(const string& str){
     //Loops through all possibilities
     for(int key = 1; key < 26; key++){
         possibleSolution = caesarCipher(str, key);
-        cout << key << ":> "<< possibleSolution << endl << endl;
-        possibleSolution.clear();
+        for(int i = 0; i < str.length(); i++){
+            cout << key << ":> "<< possibleSolution << endl << endl;
+            possibleSolution.clear();
+        }
     }
 
 }
@@ -79,7 +82,27 @@ void Encrypt::bruteforceCaesarCipher(const string& str){
  *  
  * 
  **/
-void Encrypt::vigenereCipher(const string& str, const string& key){
+void Encrypt::vigenereCipher(const string& str, string& key){
+    string result = "";
+    int row, col;
+    char temp;
+    Encrypt::keyRepeater(key, str.length()); // makes the key the same length as the original string
+
+    for(int i = 0; i < str.length(); i++){
+        if(isalpha(str.at(i)) ){    //checks to see if the current character is part of the alphabet
+            row = 'A' - key.at(i);
+            col = 'A' - str.at(i);
+            temp = Encrypt::vigenereSquareLookUp(row, col);
+        }
+        else{
+            temp = '?';
+        }
+
+        result.push_back(temp);
+
+
+    }
+    
 
 }
 /**
@@ -119,6 +142,13 @@ char Encrypt::vigenereSquareLookUp(const int row, const int col){
             {"ZABCDEFGHIJKLMNOPQRSTUVWXY"}
     };
 
+    /* or it could be done this way:
+    _*/
+
+    char character = ('A' + row) % ('A' +26);           //how far down 
+    character = 'A' + ((character - 'A' + col) % 26);   //how far inn, literally just a Caesar cipher
+
+
     return vigSquare[row].at(col);
 
 }
@@ -129,12 +159,13 @@ char Encrypt::vigenereSquareLookUp(const int row, const int col){
  * 
  **/
 string Encrypt::keyRepeater(string originalKey, const int lengthOfString){
-    int stringIndex = 0;
+    int stringIndex = 0,
+        lastIndexOfOriginalKey = originalKey.length() -1;
     
     for(int i = originalKey.length(); i < lengthOfString; i++, stringIndex++){
 
         originalKey.push_back(originalKey[stringIndex]);
-        if(stringIndex == originalKey.end()){ // if the current index is the same as the last index of the string
+        if(stringIndex == lastIndexOfOriginalKey){ // if the current index is the same as the last index of the string
             stringIndex = 0;
         }
         
@@ -142,6 +173,17 @@ string Encrypt::keyRepeater(string originalKey, const int lengthOfString){
     }
 
     return originalKey;
+}
+
+string removesSpacesInString(const string str){
+    string newString = "";
+    for(int i = 0; i < str.length();i++){
+        if(isalpha(str.at(i))){             //Adds the current character to the new string,
+            newString.push_back(str.at(i)); // as long as it is a character in the alphabet
+        }
+    }
+
+    return newString;
 }
 
 /**

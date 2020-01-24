@@ -10,10 +10,10 @@ namespace Encrypt{
     string caesarCipher(const string& str, const int key);
     void bruteforceCaesarCipher(const string& str);
     void makeUpper(string& str);
+    void vigenereCipher(const string& str, string& key);
     char vigenereSquareLookUp(const int row, const int col);
-    void vigenereCipher(const string& str, const string& key);
     string keyRepeater(string originalKey, const int lengthOfString);
-    
+    string removesSpacesInString(const string str);
 
 
 

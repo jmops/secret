@@ -15,7 +15,13 @@
 
 
 #include "encryption.h"
+#include <iostream>
+using namespace std;
 
 int main(){
+
+    string orStr = "AAAA";
+
+    cout << Encrypt::keyRepeater(orStr, 8) << endl;
 
 }
